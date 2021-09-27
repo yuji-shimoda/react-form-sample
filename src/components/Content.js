@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, createContext } from "react";
 import { Grid } from '@material-ui/core'
+import { makeStyles } from "@material-ui/core/styles";
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -7,12 +8,20 @@ import Basic from "./Basic";
 import Optional from "./Optional";
 import Confirm from "./Confirm";
 import Thanks from "./Thanks";
+import { useTranslation } from 'react-i18next';
+import { useParams } from "react-router-dom";
 
-function getSteps() {
+const useStyles = makeStyles((theme) => ({
+    root: {
+        background: 'none',
+    },
+}));
+
+function getSteps({ t }) {
     return [
-        '基本項目',
-        '任意項目',
-        '入力確認'
+        t('basicStepLabel'),
+        t('optionalStepLabel'),
+        t('confirmStepLabel')
     ];
 }
 
@@ -28,16 +37,26 @@ function getStepContent(stepIndex, handleNext, handleBack) {
             return 'Unknown stepIndex';
     }
 }
-export const UserInputData = React.createContext();
+export const UserInputData = createContext();
 
 function Content() {
-    const [currentState, setCurrentState] = React.useState({});
+    const { t, i18n } = useTranslation();
+    const classes = useStyles();
+    const [currentState, setCurrentState] = useState({});
+    const { lang } = useParams();
+    useEffect(() => {
+        if (lang === 'en') {
+            i18n.changeLanguage('en');
+        } else {
+            i18n.changeLanguage('ja');
+        }
+    }, [lang, i18n]);
     const value = {
         currentState,
         setCurrentState
     };
-    const [activeStep, setActiveStep] = React.useState(0);
-    const steps = getSteps();
+    const [activeStep, setActiveStep] = useState(0);
+    const steps = getSteps({t});
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -48,7 +67,7 @@ function Content() {
         <Grid container>
             <Grid sm={2}/>
             <Grid lg={8} sm={8} spacing={10}>
-                <Stepper activeStep={activeStep} alternativeLabel>
+                <Stepper activeStep={activeStep} alternativeLabel classes={classes}>
                     {steps.map((label) => (
                         <Step key={label}>
                             <StepLabel>{label}</StepLabel>

@@ -1,7 +1,7 @@
 import { Grid } from '@material-ui/core'
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
-import { Button, MenuItem } from "@material-ui/core";
+import { Button, MenuItem, Box } from "@material-ui/core";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import React, { useContext, useEffect } from "react";
@@ -10,18 +10,20 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
+
+
+const getBasicSchema = ({ t }) => {
+    return Yup.object().shape({
+        checkBox: Yup.boolean().oneOf([true], t('checkRequired')),
+        textBox: Yup.string().required(t('errorRequired')).max(10, t('limitCharacter')).matches(/^[a-zA-Z0-9!-/:-@¥[-`{-~ ]*$/, t('errorMatchTextBox')),
+        pullDown: Yup.string().oneOf(['one', 'two', 'three'], t('selectRequired')),
+    });  
+}
 
 function Basic(props) {
-    const basicSchema = Yup.object().shape({
-        checkBox: Yup.boolean()
-            .oneOf([true], 'チェックが必要です'),
-        textBox: Yup.string()
-            .required('必須項目です')
-            .max(10, '10文字以内で入力してください')
-            .matches(/^[a-zA-Z0-9!-/:-@¥[-`{-~ ]*$/, "半角英数字記号以外は使用できません"),
-        pullDown: Yup.string()
-            .oneOf(['one', 'two', 'three'], 'いずれかを選択してください'),
-    });  
+    const { t } = useTranslation();
+    const basicSchema = getBasicSchema({t});
     const { control, handleSubmit, setValue, formState:{ errors } } = useForm({
         mode: 'onBlur',
         defaultValues: {
@@ -62,7 +64,7 @@ function Basic(props) {
                                             color='primary'
                                         />
                                     }
-                                    label="チェックボックス"
+                                    label={t('checkBoxLabel')}
                                 />
                                 <FormHelperText>
                                     { errors.checkBox?.message }
@@ -76,12 +78,12 @@ function Basic(props) {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="テキストフィールド"
+                                label={t('textBoxLabel')}
                                 error={errors.textBox ? true : false}
                                 helperText={errors.textBox?.message}
                                 fullWidth
                                 margin="normal"
-                                placeholder="プレースホルダー"
+                                placeholder={t('textBoxPlaceholder')}
                             />
                         )}
                     />
@@ -91,7 +93,7 @@ function Basic(props) {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="プルダウンリスト"
+                                label={t('pullDownLabel')}
                                 error={errors.pullDown ? true : false}
                                 helperText={errors.pullDown?.message}
                                 fullWidth
@@ -99,19 +101,25 @@ function Basic(props) {
                                 id="select"
                                 select
                             >
-                                <MenuItem value="one">選択肢1</MenuItem>
-                                <MenuItem value="two">選択肢2</MenuItem>
-                                <MenuItem value="three">選択肢3</MenuItem>
+                                <MenuItem value="one">{t('selectOne')}</MenuItem>
+                                <MenuItem value="two">{t('selectTwo')}</MenuItem>
+                                <MenuItem value="three">{t('selectThree')}</MenuItem>
                             </TextField>
                         )}
                     />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                    >
-                        次へ
-                    </Button>
+                    <Box mt={3}>
+                        <Grid container spacing={1} justifyContent="flex-end">
+                            <Grid item>                    
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                >
+                                    {t('nextButtonLabel')}
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </form>
             </Grid>
         </Grid>

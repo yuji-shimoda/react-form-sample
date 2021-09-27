@@ -1,12 +1,14 @@
 import { Grid } from '@material-ui/core'
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+import { Button, Box } from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
 import React, { useContext, useEffect } from "react";
 import { UserInputData } from "./Content";
+import { useTranslation } from 'react-i18next';
 
 function Optional(props) {
+    const { t } = useTranslation();
     const { control, handleSubmit, setValue, getValues } = useForm({
         defaultValues: {
             multilineText: "",
@@ -38,37 +40,45 @@ function Optional(props) {
                         name="multilineText"
                         render={({ field }) => (
                             <Tooltip
-                                title="自由に記入することができます"
+                                title={t('multilineTextTooltipTitle')}
                                 placement="top-start"
                                 arrow
                             >
                                 <TextField
                                     {...field}
-                                    label="備考欄"
+                                    label={t('multilineTextLabel')}
                                     fullWidth
                                     margin="normal"
                                     rows={4}
                                     multiline
                                     variant="outlined"
-                                    placeholder="その他ご要望等あれば、ご記入ください"
+                                    placeholder={t('multilineTextPlaceHolder')}
                                 />
                             </Tooltip>
                         )}
                     />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => onSubmit("back")}
-                    >
-                        戻る
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                    >
-                        次へ
-                    </Button>
+                    <Box mt={3}>
+                        <Grid container spacing={1} justifyContent="space-between">
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => onSubmit("back")}
+                                >
+                                    {t('backButtonLabel')}
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                >
+                                    {t('nextButtonLabel')}
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
                 </form>
             </Grid>
         </Grid>

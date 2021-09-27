@@ -1,15 +1,22 @@
 import './App.css';
-import Content from './components/Content';
 import { Box, CssBaseline } from '@material-ui/core';
 import Header from './Header';
 import Footer from './Footer';
+import Form from './components/Content';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 
 function App() {
   return (
     <Box>
       <Header />
       <div style={{ padding: 30 }}>
-        <Content />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Form} />
+            <Route exact path="/:lang" component={Form} />
+          </Switch>
+        </Router>
       </div>
       <Footer />
       <CssBaseline />
