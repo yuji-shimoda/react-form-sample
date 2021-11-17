@@ -13,6 +13,7 @@ const resources = {
             "checkBoxLabel": "Check Box",
             "checkRequired": "Check required",
             "selectRequired": "Select required",
+            // eslint-disable-next-line
             "limitCharacter": "${max} or less",
             "textBoxPlaceholder": "Placeholder",
             "textBoxLabel": "Text Field",
@@ -44,6 +45,7 @@ const resources = {
             "checkBoxLabel": "チェックボックス",
             "checkRequired": "チェックが必要です",
             "selectRequired": "いずれかを選択してください",
+            // eslint-disable-next-line
             "limitCharacter": "${max} 文字以下で入力してください",
             "textBoxPlaceholder": "プレースホルダー",
             "textBoxLabel": "テキストフィールド",

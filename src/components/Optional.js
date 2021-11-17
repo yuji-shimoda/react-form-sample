@@ -20,7 +20,7 @@ function Optional(props) {
         if (optional) {
             setValue("multilineText", currentState["Optional"]["multilineText"]);
         }
-    }, [optional]);
+    }, [optional, currentState, setValue]);
     const onSubmit = (action) => {
         if(action === 'back') {
             props.handleBack();

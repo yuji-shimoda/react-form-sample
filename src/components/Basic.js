@@ -41,7 +41,7 @@ function Basic(props) {
             setValue('textBox', currentState["Basic"]["textBox"]);
             setValue("pullDown", currentState["Basic"]["pullDown"]);
         }
-    }, [basic]);
+    }, [basic, currentState, setValue]);
     const onSubmit = (data) => {
         props.handleNext();
         setCurrentState({...currentState, "Basic": data });
